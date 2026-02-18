@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Career Guidance Platform{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Student Dashboard</h1>
+    <p>Welcome, {{ user.username }}!</p>
+</div>
+
+<div class="card">
+    <h2>Available Tests</h2>
+    {% if tests %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            {% for test in tests %}
+            <div style="border: 1px solid #ddd; padding: 1.5rem; border-radius: 8px;">
+                <h3>{{ test.title }}</h3>
+                <p style="color: #666; margin: 0.5rem 0;">{{ test.description }}</p>
+                <p style="font-size: 0.9rem; color: #888;">Duration: {{ test.duration_minutes }} minutes</p>
+                <a href="{% url 'assessments:take_test' test.id %}" class="btn" style="margin-top: 1rem;">Start Test</a>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="color: #666; margin-top: 1rem;">No tests available at the moment.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>Your Past Attempts</h2>
+    {% if attempts %}
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+            <thead>
+                <tr style="background: #f5f5f5; border-bottom: 2px solid #ddd;">
+                    <th style="padding: 0.75rem; text-align: left;">Test</th>
+                    <th style="padding: 0.75rem; text-align: left;">Date</th>
+                    <th style="padding: 0.75rem; text-align: left;">Score</th>
+                    <th style="padding: 0.75rem; text-align: left;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attempt in attempts %}
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 0.75rem;">{{ attempt.test.title }}</td>
+                    <td style="padding: 0.75rem;">{{ attempt.started_at|date:"Y-m-d H:i" }}</td>
+                    <td style="padding: 0.75rem;">
+                        {% if attempt.completed_at %}
+                            {{ attempt.total_score|floatformat:2 }}%
+                        {% else %}
+                            <span style="color: #888;">In Progress</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 0.75rem;">
+                        {% if attempt.completed_at %}
+                            <a href="{% url 'assessments:view_report' attempt.id %}" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View Report</a>
+                            <a href="{% url 'assessments:download_pdf' attempt.id %}" class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-left: 0.5rem;">Download PDF</a>
+                        {% else %}
+                            <span style="color: #888;">Not completed</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: #666; margin-top: 1rem;">You haven't taken any tests yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

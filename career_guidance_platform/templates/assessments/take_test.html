@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ test.title }} - Career Guidance Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timer {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: white;
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #e74c3c;
+    }
+    .question-item {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid #ddd;
+    }
+    .question-item:last-child {
+        border-bottom: none;
+    }
+    .slider-container {
+        margin: 1rem 0;
+    }
+    .slider {
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: #ddd;
+        outline: none;
+        -webkit-appearance: none;
+    }
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3498db;
+        cursor: pointer;
+    }
+    .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3498db;
+        cursor: pointer;
+    }
+    .slider-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 0.5rem;
+    }
+    .autosave-status {
+        color: #27ae60;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="timer" id="timer">
+    <div>Time Remaining</div>
+    <div id="timer-display">{{ test.duration_minutes }}:00</div>
+</div>
+
+<div class="card">
+    <h1>{{ test.title }}</h1>
+    <p>{{ test.description }}</p>
+    <p style="color: #666; margin-top: 0.5rem;">Please answer all questions on a scale of 0-10</p>
+</div>
+
+<form id="assessment-form">
+    <div class="card">
+        {% for tq in test_questions %}
+        <div class="question-item">
+            <h3>Question {{ tq.order }}</h3>
+            <p style="margin: 0.5rem 0 1rem 0;">{{ tq.question.text }}</p>
+            
+            <div class="slider-container">
+                <input 
+                    type="range" 
+                    class="slider" 
+                    name="question_{{ tq.question.id }}"
+                    id="question_{{ tq.question.id }}"
+                    min="0" 
+                    max="10" 
+                    value="5"
+                    data-question-id="{{ tq.question.id }}"
+                >
+                <div class="slider-labels">
+                    <span>0 - Not at all</span>
+                    <span id="value_{{ tq.question.id }}">5</span>
+                    <span>10 - Very much</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-success">Submit Assessment</button>
+            <div class="autosave-status" id="autosave-status"></div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const attemptId = {{ attempt.id }};
+    const durationMinutes = {{ test.duration_minutes }};
+    let timeRemaining = durationMinutes * 60; // seconds
+    let answers = {};
+    let autosaveTimer = null;
+    
+    // Timer functionality
+    function updateTimer() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById('timer-display').textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeRemaining <= 0) {
+            alert('Time is up! Submitting your answers...');
+            submitAssessment();
+        } else {
+            timeRemaining--;
+            setTimeout(updateTimer, 1000);
+        }
+    }
+    
+    // Start timer
+    updateTimer();
+    
+    // Update slider values
+    document.querySelectorAll('.slider').forEach(slider => {
+        slider.addEventListener('input', function() {
+            const questionId = this.dataset.questionId;
+            const value = this.value;
+            document.getElementById(`value_${questionId}`).textContent = value;
+            
+            // Store answer
+            answers[questionId] = parseFloat(value);
+            
+            // Trigger autosave
+            scheduleAutosave();
+        });
+        
+        // Initialize values
+        const questionId = slider.dataset.questionId;
+        answers[questionId] = parseFloat(slider.value);
+    });
+    
+    // Autosave functionality
+    function scheduleAutosave() {
+        clearTimeout(autosaveTimer);
+        autosaveTimer = setTimeout(autosave, 2000); // Autosave after 2 seconds of inactivity
+    }
+    
+    function autosave() {
+        const statusEl = document.getElementById('autosave-status');
+        statusEl.textContent = 'Saving...';
+        
+        fetch(`/attempt/${attemptId}/save/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ answers: answers })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                statusEl.textContent = 'Progress saved ✓';
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            statusEl.textContent = 'Error saving';
+            statusEl.style.color = '#e74c3c';
+        });
+    }
+    
+    // Form submission
+    document.getElementById('assessment-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitAssessment();
+    });
+    
+    function submitAssessment() {
+        if (!confirm('Are you sure you want to submit your assessment?')) {
+            return;
+        }
+        
+        fetch(`/attempt/${attemptId}/submit/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ answers: answers })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Assessment submitted successfully!');
+                window.location.href = `/attempt/${attemptId}/report/`;
+            } else {
+                alert('Error submitting assessment: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error submitting assessment');
+        });
+    }
+    
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}

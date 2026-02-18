@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Assessment Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            font-size: 12pt;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 3px solid #2c3e50;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 24pt;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 12pt;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            page-break-inside: avoid;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            font-size: 18pt;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .info-item {
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            font-size: 10pt;
+        }
+        
+        .info-value {
+            font-size: 12pt;
+            color: #2c3e50;
+        }
+        
+        .score-card {
+            background: #ecf0f1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .score-card .total-score {
+            font-size: 48pt;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .score-card .score-label {
+            font-size: 14pt;
+            color: #7f8c8d;
+        }
+        
+        .dimension-scores {
+            margin-top: 1rem;
+        }
+        
+        .dimension-item {
+            margin-bottom: 1rem;
+            page-break-inside: avoid;
+        }
+        
+        .dimension-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dimension-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .dimension-score {
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .top-dimensions {
+            list-style: none;
+            counter-reset: dimension-counter;
+        }
+        
+        .top-dimensions li {
+            counter-increment: dimension-counter;
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            background: #e8f5e9;
+            border-left: 4px solid #27ae60;
+            border-radius: 4px;
+        }
+        
+        .top-dimensions li::before {
+            content: counter(dimension-counter) ". ";
+            font-weight: bold;
+            color: #27ae60;
+            margin-right: 0.5rem;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 10pt;
+        }
+        
+        .recommendation {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Career Assessment Report</h1>
+        <p>Personalized Career Guidance Analysis</p>
+    </div>
+    
+    <div class="section">
+        <h2>Student Information</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Name</div>
+                <div class="info-value">{{ user.username }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Assessment Date</div>
+                <div class="info-value">{{ attempt.started_at|date:"F d, Y" }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Test Name</div>
+                <div class="info-value">{{ attempt.test.title }}</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Completion Time</div>
+                <div class="info-value">{{ attempt.completed_at|date:"h:i A" }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Overall Score</h2>
+        <div class="score-card">
+            <div class="total-score">{{ total_score|floatformat:1 }}%</div>
+            <div class="score-label">Total Assessment Score</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Top Strengths</h2>
+        <p>Based on your assessment, here are your top career dimensions:</p>
+        <ul class="top-dimensions">
+            {% for dimension, score in top_dimensions %}
+            <li>
+                <strong>{{ dimension }}</strong>: {{ score|floatformat:1 }}%
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2>Detailed Dimension Scores</h2>
+        <div class="dimension-scores">
+            {% for dimension, score in dimension_scores.items %}
+            <div class="dimension-item">
+                <div class="dimension-header">
+                    <span class="dimension-name">{{ dimension }}</span>
+                    <span class="dimension-score">{{ score|floatformat:1 }}%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ score }}%;"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Recommendations</h2>
+        <div class="recommendation">
+            <p><strong>Career Guidance:</strong></p>
+            <p>Based on your strong performance in {{ top_dimensions.0.0 }}, consider exploring careers in fields that leverage these strengths. Your assessment shows a balanced profile across multiple dimensions, indicating versatility and adaptability.</p>
+        </div>
+        <div class="recommendation">
+            <p><strong>Next Steps:</strong></p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>Research careers aligned with your top dimensions</li>
+                <li>Consider internships or shadowing opportunities in these fields</li>
+                <li>Develop skills in areas where you scored lower for a more balanced profile</li>
+                <li>Consult with a career counselor for personalized guidance</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>This report was generated by the Career Guidance Platform</p>
+        <p>© {{ attempt.started_at|date:"Y" }} Career Guidance Platform. All rights reserved.</p>
+    </div>
+</body>
+</html>
