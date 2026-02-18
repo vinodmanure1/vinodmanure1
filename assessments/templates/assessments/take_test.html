@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ test.title }} - Career Guidance Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin: 0;
+        }
+        .question-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        .options label:hover {
+            background: #e9ecef;
+        }
+        .form-group {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background-color: #229954;
+        }
+        .required {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>{{ test.title }}</h1>
+        <p>{{ test.description }}</p>
+    </div>
+
+    <form id="testForm">
+        <div class="form-group">
+            <label for="student_name">Your Name <span class="required">*</span></label>
+            <input type="text" id="student_name" name="student_name" required>
+            
+            <label for="student_email" style="margin-top: 15px; display: block;">Email (optional)</label>
+            <input type="email" id="student_email" name="student_email">
+        </div>
+
+        {% for tq in test_questions %}
+            <div class="question-card">
+                <div class="question-text">
+                    {{ forloop.counter }}. {{ tq.question.question_text }}
+                </div>
+                <ul class="options">
+                    <li>
+                        <label>
+                            <input type="radio" name="question_{{ tq.question.id }}" value="A" required>
+                            A) {{ tq.question.option_a }}
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="question_{{ tq.question.id }}" value="B" required>
+                            B) {{ tq.question.option_b }}
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="question_{{ tq.question.id }}" value="C" required>
+                            C) {{ tq.question.option_c }}
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="question_{{ tq.question.id }}" value="D" required>
+                            D) {{ tq.question.option_d }}
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="submit-btn">Submit Test</button>
+    </form>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const studentName = formData.get('student_name');
+            const studentEmail = formData.get('student_email');
+            
+            // Collect answers
+            const answers = {};
+            formData.forEach((value, key) => {
+                if (key.startsWith('question_')) {
+                    const questionId = key.replace('question_', '');
+                    answers[questionId] = value;
+                }
+            });
+            
+            // Submit to API
+            try {
+                const response = await fetch('/api/submit-attempt/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        test_id: {{ test.id }},
+                        student_name: studentName,
+                        student_email: studentEmail,
+                        answers: answers
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = `/student/result/${data.attempt_id}/`;
+                } else {
+                    alert('Error submitting test: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error submitting test: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Career Assessment Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+        }
+        .header p {
+            color: #7f8c8d;
+            margin: 5px 0;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .score-table th,
+        .score-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .score-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .score-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .total-row {
+            background-color: #d4edda !important;
+            font-weight: bold;
+        }
+        .feedback {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+        }
+        .feedback h3 {
+            color: #2c3e50;
+            margin-top: 0;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Career Assessment Report</h1>
+        <p><strong>Student:</strong> {{ attempt.student_name }}</p>
+        <p><strong>Test:</strong> {{ attempt.test.title }}</p>
+        <p><strong>Date:</strong> {{ attempt.started_at|date:"F d, Y" }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Score Summary</h2>
+        {% if scores %}
+            <table class="score-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Correct</th>
+                        <th>Total</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if scores.category_scores %}
+                        {% for category, score in scores.category_scores.items %}
+                            <tr>
+                                <td>{{ category }}</td>
+                                <td>{{ score.correct }}</td>
+                                <td>{{ score.total }}</td>
+                                <td>{{ score.percentage }}%</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    {% if scores.total_score %}
+                        <tr class="total-row">
+                            <td>Total Score</td>
+                            <td>{{ scores.total_score.correct }}</td>
+                            <td>{{ scores.total_score.total }}</td>
+                            <td>{{ scores.total_score.percentage }}%</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Personalized Feedback</h2>
+        {% if feedback %}
+            {% for category, feedback_text in feedback.items %}
+                <div class="feedback">
+                    <h3>{{ category }}</h3>
+                    <p>{{ feedback_text }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Keep up the good work and continue developing your skills!</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Next Steps</h2>
+        <p>
+            Based on your assessment results, we recommend:
+        </p>
+        <ul>
+            <li>Focus on strengthening areas where your scores are below 75%</li>
+            <li>Explore career paths that align with your strongest skill categories</li>
+            <li>Consider additional practice tests to track your progress</li>
+            <li>Consult with a career counselor to discuss your results in detail</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>Career Guidance Platform | Generated on {{ attempt.completed_at|date:"F d, Y at h:i A" }}</p>
+    </div>
+</body>
+</html>
