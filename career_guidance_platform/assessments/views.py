@@ -1,6 +1,6 @@
 import io
 import os
-from datetime import datetime
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, FileResponse
@@ -101,7 +101,7 @@ def submit_attempt(request, attempt_id):
         attempt.scores = score_result['dimension_scores']
         attempt.total_score = score_result['total_score']
         attempt.top_dimensions = score_result['top_dimensions']
-        attempt.completed_at = datetime.now()
+        attempt.completed_at = timezone.now()
         attempt.save()
         
         return JsonResponse({
