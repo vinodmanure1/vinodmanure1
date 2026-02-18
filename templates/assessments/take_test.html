@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+{% load assessment_filters %}
+
+{% block title %}{{ test.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .test-header {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .timer {
+        font-size: 24px;
+        font-weight: bold;
+        color: #e74c3c;
+        float: right;
+    }
+    
+    .question-card {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .question-text {
+        font-size: 18px;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+    
+    .answer-options {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .answer-option {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .answer-option input[type="radio"] {
+        display: none;
+    }
+    
+    .answer-option label {
+        display: block;
+        padding: 15px;
+        background: #ecf0f1;
+        border: 2px solid #bdc3c7;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .answer-option input[type="radio"]:checked + label {
+        background: #3498db;
+        color: white;
+        border-color: #2980b9;
+    }
+    
+    .answer-option label:hover {
+        background: #d5dbdb;
+    }
+    
+    .submit-section {
+        text-align: center;
+        margin-top: 30px;
+    }
+    
+    .autosave-status {
+        display: inline-block;
+        margin-left: 20px;
+        color: #27ae60;
+        font-size: 14px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="test-header">
+    <h2>{{ test.title }}</h2>
+    <div class="timer" id="timer">{{ test.duration_minutes }}:00</div>
+    <p>{{ test.description }}</p>
+</div>
+
+<form id="test-form" method="post">
+    {% csrf_token %}
+    
+    {% for question in questions %}
+        <div class="question-card">
+            <div class="question-text">
+                <strong>Question {{ forloop.counter }}:</strong> {{ question.text }}
+            </div>
+            
+            <div class="answer-options">
+                {% for i in "012345" %}
+                    <div class="answer-option">
+                        <input type="radio" 
+                               id="q{{ question.id }}_{{ i }}" 
+                               name="question_{{ question.id }}" 
+                               value="{{ i }}"
+                               {% if attempt.answers|get_item:question.id|stringformat:"s" == i %}checked{% endif %}>
+                        <label for="q{{ question.id }}_{{ i }}">{{ i }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+    
+    <div class="submit-section">
+        <button type="submit" class="btn btn-success">Submit Test</button>
+        <span class="autosave-status" id="autosave-status"></span>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Timer functionality
+    let timeRemaining = {{ test.duration_minutes }} * 60; // in seconds
+    const timerElement = document.getElementById('timer');
+    
+    function updateTimer() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeRemaining <= 0) {
+            alert('Time is up! Submitting your test...');
+            document.getElementById('test-form').submit();
+        } else {
+            timeRemaining--;
+            setTimeout(updateTimer, 1000);
+        }
+    }
+    
+    updateTimer();
+    
+    // Autosave functionality
+    const attemptId = {{ attempt.id }};
+    const autosaveStatus = document.getElementById('autosave-status');
+    let autosaveTimeout;
+    
+    function autosave() {
+        const formData = new FormData(document.getElementById('test-form'));
+        const answers = {};
+        
+        for (let [key, value] of formData.entries()) {
+            if (key.startsWith('question_')) {
+                const questionId = key.replace('question_', '');
+                answers[questionId] = parseInt(value);
+            }
+        }
+        
+        fetch(`/assessments/attempt/${attemptId}/autosave/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: JSON.stringify({answers: answers})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                autosaveStatus.textContent = '✓ Saved';
+                setTimeout(() => {
+                    autosaveStatus.textContent = '';
+                }, 2000);
+            }
+        })
+        .catch(error => {
+            console.error('Autosave error:', error);
+        });
+    }
+    
+    // Trigger autosave on answer change
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            clearTimeout(autosaveTimeout);
+            autosaveTimeout = setTimeout(autosave, 1000);
+        });
+    });
+    
+    // Handle form submission
+    document.getElementById('test-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const answers = {};
+        
+        for (let [key, value] of formData.entries()) {
+            if (key.startsWith('question_')) {
+                const questionId = key.replace('question_', '');
+                answers[questionId] = parseInt(value);
+            }
+        }
+        
+        fetch('/assessments/api/submit/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: JSON.stringify({
+                test_id: {{ test.id }},
+                answers: answers
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.attempt_id) {
+                window.location.href = `/assessments/report/${data.attempt_id}/`;
+            }
+        })
+        .catch(error => {
+            alert('Error submitting test: ' + error);
+        });
+    });
+</script>
+{% endblock %}

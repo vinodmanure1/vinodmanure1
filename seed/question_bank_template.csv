@@ -1,0 +1,19 @@
+text,dimension,weight,order,is_active
+"I enjoy solving complex mathematical problems",analytical,5,1,True
+"I prefer to analyze data before making decisions",analytical,5,2,True
+"I like to break down problems into smaller parts",analytical,4,3,True
+"I enjoy creating new and original ideas",creative,5,4,True
+"I often think of innovative solutions to problems",creative,5,5,True
+"I like to express myself through art or writing",creative,4,6,True
+"I am good at applying knowledge to real-world situations",practical,5,7,True
+"I prefer hands-on activities over theoretical concepts",practical,4,8,True
+"I can quickly learn new practical skills",practical,5,9,True
+"I enjoy working in teams and collaborating with others",social,5,10,True
+"I am comfortable speaking in front of groups",social,4,11,True
+"I can easily understand others' perspectives",social,5,12,True
+"I naturally take charge in group situations",leadership,5,13,True
+"I enjoy organizing and planning activities",leadership,4,14,True
+"I can motivate others to achieve common goals",leadership,5,15,True
+"I am proficient with computer programs and technology",technical,5,16,True
+"I enjoy learning about new technologies",technical,5,17,True
+"I can troubleshoot technical problems effectively",technical,4,18,True
