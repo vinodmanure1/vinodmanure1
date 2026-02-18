@@ -62,16 +62,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'career_platform.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB', default='career_guidance_db'),
-        'USER': config('POSTGRES_USER', default='career_user'),
-        'PASSWORD': config('POSTGRES_PASSWORD', default='career_password'),
-        'HOST': config('POSTGRES_HOST', default='localhost'),
-        'PORT': config('POSTGRES_PORT', default='5432'),
+# Use SQLite for local testing if PostgreSQL not configured
+USE_POSTGRES = config('USE_POSTGRES', default=False, cast=bool)
+
+if USE_POSTGRES:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('POSTGRES_DB', default='career_guidance_db'),
+            'USER': config('POSTGRES_USER', default='career_user'),
+            'PASSWORD': config('POSTGRES_PASSWORD', default='career_password'),
+            'HOST': config('POSTGRES_HOST', default='localhost'),
+            'PORT': config('POSTGRES_PORT', default='5432'),
+        }
     }
-}
+else:
+    # SQLite for testing
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
