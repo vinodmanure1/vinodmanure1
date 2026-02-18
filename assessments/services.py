@@ -40,7 +40,7 @@ def import_questions_from_csv(csv_file) -> Dict[str, int]:
                 try:
                     import json
                     options = json.loads(options_str)
-                except:
+                except (json.JSONDecodeError, ValueError):
                     # If not JSON, treat as comma-separated list
                     options = [opt.strip() for opt in options_str.split(',')]
             else:
@@ -107,7 +107,7 @@ def compute_scores(attempt: Attempt) -> Dict[str, Any]:
                 try:
                     rating = int(user_answer)
                     question_score = (rating / 5.0) * question.weight
-                except:
+                except (ValueError, TypeError):
                     question_score = 0
             
             dimension_scores[dimension] += question_score
