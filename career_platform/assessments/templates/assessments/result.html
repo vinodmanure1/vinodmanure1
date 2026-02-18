@@ -1,0 +1,124 @@
+{% extends 'assessments/base.html' %}
+
+{% block title %}Assessment Result - Career Guidance Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .result-header {
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+    .recommended-career {
+        background-color: #27ae60;
+        color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    .recommended-career h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    .score-list {
+        list-style: none;
+    }
+    .score-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        border-left: 4px solid #3498db;
+    }
+    .score-item.top {
+        background-color: #d4edda;
+        border-left-color: #27ae60;
+        font-weight: bold;
+    }
+    .score-bar {
+        height: 20px;
+        background-color: #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+    .score-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+        transition: width 0.5s ease;
+    }
+    .actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="result-header">
+    <h2>Assessment Complete!</h2>
+    <p>Thank you for completing the {{ result.assessment.title }}</p>
+    <p><small>Completed on {{ result.completed_at|date:"F d, Y \a\t H:i" }}</small></p>
+</div>
+
+{% if result.recommended_career %}
+<div class="recommended-career">
+    <h3>🎯 Your Recommended Career</h3>
+    <h2>{{ result.recommended_career.name }}</h2>
+    <p>{{ result.recommended_career.description }}</p>
+    
+    {% if result.recommended_career.average_salary %}
+    <p><strong>Average Salary:</strong> ${{ result.recommended_career.average_salary|floatformat:0 }}</p>
+    {% endif %}
+    
+    {% if result.recommended_career.growth_rate %}
+    <p><strong>Growth Rate:</strong> {{ result.recommended_career.growth_rate }}%</p>
+    {% endif %}
+    
+    {% if result.recommended_career.education_required %}
+    <p><strong>Education Required:</strong> {{ result.recommended_career.education_required }}</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="card">
+    <h3>Career Match Scores</h3>
+    <p>Based on your responses, here's how you match with different career paths:</p>
+    
+    <ul class="score-list">
+        {% for career_name, score in sorted_scores %}
+        <li class="score-item {% if forloop.first %}top{% endif %}">
+            <div style="flex: 1;">
+                <strong>{{ career_name }}</strong>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: {{ score }}%;"></div>
+                </div>
+            </div>
+            <span style="margin-left: 1rem; font-size: 1.2rem;">{{ score }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Next Steps</h3>
+    <ul>
+        <li>Research more about your recommended career path</li>
+        <li>Explore educational programs and certifications</li>
+        <li>Connect with professionals in the field</li>
+        <li>Consider internships or job shadowing opportunities</li>
+    </ul>
+    
+    <div class="actions">
+        <a href="{% url 'home' %}" class="btn btn-primary">Take Another Assessment</a>
+        <a href="{% url 'download_pdf' result.id %}" class="btn btn-success">Download PDF Report</a>
+    </div>
+</div>
+{% endblock %}

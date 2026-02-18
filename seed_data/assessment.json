@@ -1,0 +1,252 @@
+{
+  "assessment": {
+    "title": "Career Interest Assessment",
+    "description": "Discover your ideal career path based on your interests, skills, and preferences. This comprehensive assessment will help guide you toward careers that align with your strengths.",
+    "duration_minutes": 15,
+    "is_active": true
+  },
+  "questions": [
+    {
+      "text": "What type of work environment do you prefer?",
+      "question_type": "MULTIPLE_CHOICE",
+      "order": 1,
+      "answers": [
+        {
+          "text": "Office setting with computer work",
+          "career_name": "Software Engineer",
+          "score": 8,
+          "order": 1
+        },
+        {
+          "text": "Hospital or clinical setting",
+          "career_name": "Registered Nurse",
+          "score": 10,
+          "order": 2
+        },
+        {
+          "text": "Creative studio or agency",
+          "career_name": "Graphic Designer",
+          "score": 9,
+          "order": 3
+        },
+        {
+          "text": "Classroom or educational institution",
+          "career_name": "Teacher",
+          "score": 10,
+          "order": 4
+        }
+      ]
+    },
+    {
+      "text": "Which activity sounds most appealing to you?",
+      "question_type": "MULTIPLE_CHOICE",
+      "order": 2,
+      "answers": [
+        {
+          "text": "Analyzing data and creating reports",
+          "career_name": "Data Scientist",
+          "score": 10,
+          "order": 1
+        },
+        {
+          "text": "Designing and building mechanical systems",
+          "career_name": "Mechanical Engineer",
+          "score": 9,
+          "order": 2
+        },
+        {
+          "text": "Creating marketing campaigns",
+          "career_name": "Marketing Manager",
+          "score": 10,
+          "order": 3
+        },
+        {
+          "text": "Providing financial advice and analysis",
+          "career_name": "Financial Analyst",
+          "score": 10,
+          "order": 4
+        }
+      ]
+    },
+    {
+      "text": "What is your preferred way of problem-solving?",
+      "question_type": "MULTIPLE_CHOICE",
+      "order": 3,
+      "answers": [
+        {
+          "text": "Using logic and algorithms",
+          "career_name": "Software Engineer",
+          "score": 10,
+          "order": 1
+        },
+        {
+          "text": "Through empathy and understanding people",
+          "career_name": "Psychologist",
+          "score": 10,
+          "order": 2
+        },
+        {
+          "text": "Designing and planning infrastructure",
+          "career_name": "Civil Engineer",
+          "score": 9,
+          "order": 3
+        },
+        {
+          "text": "Creating visual solutions",
+          "career_name": "Graphic Designer",
+          "score": 10,
+          "order": 4
+        }
+      ]
+    },
+    {
+      "text": "How do you prefer to work with others?",
+      "question_type": "MULTIPLE_CHOICE",
+      "order": 4,
+      "answers": [
+        {
+          "text": "Leading and managing teams",
+          "career_name": "Marketing Manager",
+          "score": 9,
+          "order": 1
+        },
+        {
+          "text": "Providing care and direct support",
+          "career_name": "Registered Nurse",
+          "score": 9,
+          "order": 2
+        },
+        {
+          "text": "Teaching and mentoring",
+          "career_name": "Teacher",
+          "score": 10,
+          "order": 3
+        },
+        {
+          "text": "Collaborating on technical projects",
+          "career_name": "Software Engineer",
+          "score": 7,
+          "order": 4
+        }
+      ]
+    },
+    {
+      "text": "What kind of impact do you want to make?",
+      "question_type": "MULTIPLE_CHOICE",
+      "order": 5,
+      "answers": [
+        {
+          "text": "Improving people's health and wellbeing",
+          "career_name": "Registered Nurse",
+          "score": 10,
+          "order": 1
+        },
+        {
+          "text": "Building innovative technology solutions",
+          "career_name": "Software Engineer",
+          "score": 9,
+          "order": 2
+        },
+        {
+          "text": "Shaping minds and futures through education",
+          "career_name": "Teacher",
+          "score": 9,
+          "order": 3
+        },
+        {
+          "text": "Creating visual communications that inspire",
+          "career_name": "Graphic Designer",
+          "score": 8,
+          "order": 4
+        }
+      ]
+    },
+    {
+      "text": "Which skill set best matches your strengths?",
+      "question_type": "MULTIPLE_CHOICE",
+      "order": 6,
+      "answers": [
+        {
+          "text": "Mathematics and statistical analysis",
+          "career_name": "Data Scientist",
+          "score": 10,
+          "order": 1
+        },
+        {
+          "text": "Communication and persuasion",
+          "career_name": "Marketing Manager",
+          "score": 9,
+          "order": 2
+        },
+        {
+          "text": "Mechanical and technical design",
+          "career_name": "Mechanical Engineer",
+          "score": 10,
+          "order": 3
+        },
+        {
+          "text": "Understanding human behavior",
+          "career_name": "Psychologist",
+          "score": 9,
+          "order": 4
+        }
+      ]
+    },
+    {
+      "text": "What type of projects excite you most?",
+      "question_type": "MULTIPLE_CHOICE",
+      "order": 7,
+      "answers": [
+        {
+          "text": "Large-scale infrastructure projects",
+          "career_name": "Civil Engineer",
+          "score": 10,
+          "order": 1
+        },
+        {
+          "text": "Financial planning and investment strategies",
+          "career_name": "Financial Analyst",
+          "score": 10,
+          "order": 2
+        },
+        {
+          "text": "Building software applications",
+          "career_name": "Software Engineer",
+          "score": 9,
+          "order": 3
+        },
+        {
+          "text": "Creating brand identities and visual assets",
+          "career_name": "Graphic Designer",
+          "score": 9,
+          "order": 4
+        }
+      ]
+    },
+    {
+      "text": "How important is work-life balance to you?",
+      "question_type": "RATING",
+      "order": 8,
+      "answers": [
+        {
+          "text": "Very important - I prefer predictable hours",
+          "career_name": "Teacher",
+          "score": 8,
+          "order": 1
+        },
+        {
+          "text": "Somewhat important - Flexible but can handle demanding periods",
+          "career_name": "Software Engineer",
+          "score": 6,
+          "order": 2
+        },
+        {
+          "text": "Not a priority - I'm willing to work irregular hours",
+          "career_name": "Registered Nurse",
+          "score": 7,
+          "order": 3
+        }
+      ]
+    }
+  ]
+}
