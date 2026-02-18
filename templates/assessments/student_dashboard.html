@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>Start your career assessment journey by taking one of our available tests.</p>
+</div>
+
+<div class="card">
+    <h3>Available Tests</h3>
+    {% if tests %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Description</th>
+                    <th>Duration</th>
+                    <th>Questions</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in tests %}
+                <tr>
+                    <td><strong>{{ test.name }}</strong></td>
+                    <td>{{ test.description|truncatewords:20 }}</td>
+                    <td>{{ test.duration_minutes }} minutes</td>
+                    <td>{{ test.test_questions.count }} questions</td>
+                    <td>
+                        <a href="{% url 'take_test' test.id %}" class="btn btn-success">Start Test</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tests available at the moment.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Your Recent Attempts</h3>
+    {% if attempts %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                    <th>Percentage</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attempt in attempts %}
+                <tr>
+                    <td>{{ attempt.test.name }}</td>
+                    <td>{{ attempt.started_at|date:"M d, Y H:i" }}</td>
+                    <td>{{ attempt.get_status_display }}</td>
+                    <td>{{ attempt.total_score }}</td>
+                    <td>{{ attempt.percentage }}%</td>
+                    <td>
+                        {% if attempt.status == 'completed' %}
+                            <a href="{% url 'view_report' attempt.id %}" class="btn">View Report</a>
+                        {% else %}
+                            <span style="color: #7f8c8d;">Incomplete</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You haven't taken any tests yet. Start your first assessment above!</p>
+    {% endif %}
+</div>
+{% endblock %}

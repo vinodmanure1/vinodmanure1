@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Test Report{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Career Assessment Report</h2>
+    <div class="alert alert-success">
+        <strong>Test Completed Successfully!</strong>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <p><strong>Test:</strong> {{ attempt.test.name }}</p>
+        <p><strong>Date:</strong> {{ attempt.completed_at|date:"F d, Y H:i" }}</p>
+        <p><strong>Total Score:</strong> {{ attempt.total_score }} / {{ attempt.test.test_questions.count }}</p>
+        <p><strong>Percentage:</strong> {{ attempt.percentage }}%</p>
+    </div>
+    
+    <div style="margin-top: 20px;">
+        <a href="{% url 'download_pdf_report' attempt.id %}" class="btn btn-success">Download PDF Report</a>
+        <a href="{% url 'student_dashboard' %}" class="btn">Back to Dashboard</a>
+    </div>
+</div>
+
+{% if report.categories %}
+    {% for category in report.categories %}
+    <div class="card">
+        <h3>{{ category.name|title }} Skills</h3>
+        
+        <div style="margin: 20px 0;">
+            <div style="background: #ecf0f1; height: 30px; border-radius: 15px; overflow: hidden;">
+                <div style="background: {% if category.percentage >= 70 %}#27ae60{% elif category.percentage >= 40 %}#f39c12{% else %}#e74c3c{% endif %}; height: 100%; width: {{ category.percentage }}%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                    {{ category.percentage }}%
+                </div>
+            </div>
+            <p style="margin-top: 10px;">Score: {{ category.score }} / {{ category.total }}</p>
+        </div>
+        
+        <h4>{{ category.title }}</h4>
+        <p style="margin: 15px 0;">{{ category.content }}</p>
+        
+        <div style="background: #e8f5e9; padding: 15px; border-radius: 4px; margin-top: 15px;">
+            <strong>Recommendations:</strong>
+            <p style="margin-top: 10px;">{{ category.recommendations }}</p>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div class="card" style="text-align: center;">
+    <h3>Next Steps</h3>
+    <p>Review your results and consider the recommendations provided for each skill area.</p>
+    <a href="{% url 'student_dashboard' %}" class="btn btn-success">Take Another Test</a>
+</div>
+{% endblock %}

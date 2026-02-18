@@ -1,0 +1,26 @@
+text,category,option_a,option_b,option_c,option_d,correct_answer
+"Which programming paradigm do you prefer?",technical,Object-Oriented,Functional,Procedural,Declarative,A
+"How would you debug a complex software issue?",technical,Use print statements,Use a debugger,Review logs systematically,Ask a colleague,C
+"What is your approach to learning new technologies?",technical,Read documentation,Watch tutorials,Build projects,Take courses,C
+"Which database type would you choose for a social network?",technical,Relational,NoSQL,Graph,Key-Value,C
+"How do you ensure code quality?",technical,Code reviews,Automated testing,Linting,All of the above,D
+"You need to design a poster for an event. What's your first step?",creative,Research similar designs,Sketch rough ideas,Choose color palette,Brainstorm themes,D
+"How do you approach a creative block?",creative,Take a break,Look for inspiration,Discuss with others,Try different medium,A
+"What inspires your creative work?",creative,Nature,Art,Music,Personal experiences,D
+"Which creative tool would you learn first?",creative,Photoshop,Illustrator,Figma,Canva,C
+"How do you present creative ideas to clients?",creative,Show sketches,Create mockups,Build prototype,Written proposal,B
+"You have a dataset with missing values. What do you do?",analytical,Remove rows,Impute values,Analyze patterns,Depends on context,D
+"How would you identify trends in sales data?",analytical,Line charts,Statistical analysis,Moving averages,All of the above,D
+"What's your approach to solving complex problems?",analytical,Break into parts,Research solutions,Trial and error,Systematic analysis,D
+"How do you validate a hypothesis?",analytical,Gut feeling,Statistical tests,Expert opinion,Customer feedback,B
+"You notice an anomaly in data. What's your first step?",analytical,Ignore it,Investigate cause,Check collection method,Report immediately,C
+"A team member is struggling with their work. What do you do?",interpersonal,Offer help,Give advice,Listen to concerns,Report to manager,C
+"How do you handle conflicts in a team?",interpersonal,Avoid confrontation,Mediate discussion,Take sides,Escalate to management,B
+"What's your communication style?",interpersonal,Direct,Diplomatic,Casual,Formal,B
+"How do you build trust with colleagues?",interpersonal,Be reliable,Show competence,Be friendly,All of the above,D
+"A project deadline is at risk. How do you inform stakeholders?",interpersonal,Send email,Hold meeting,Call individually,Wait until certain,B
+"Your team is losing motivation. What do you do?",leadership,Give pep talk,Understand root cause,Offer incentives,Set clearer goals,B
+"How do you delegate tasks?",leadership,By expertise,Equally,By availability,Challenge team members,A
+"A decision needs to be made quickly. What's your approach?",leadership,Consult team,Decide alone,Follow protocol,Analyze quickly then decide,D
+"How do you handle team disagreements?",leadership,Make final decision,Facilitate consensus,Vote,Compromise,B
+"What's your vision for team success?",leadership,Meeting targets,Personal growth,Innovation,Balanced achievement,D
