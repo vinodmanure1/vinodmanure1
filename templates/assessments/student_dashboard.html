@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h2>Available Tests</h2>
+
+{% if tests %}
+    <div class="tests-section">
+        {% for test in tests %}
+            <div class="card">
+                <h3>{{ test.title }}</h3>
+                <p>{{ test.description }}</p>
+                <p><strong>Duration:</strong> {{ test.duration_minutes }} minutes</p>
+                <a href="{% url 'assessments:take_test' test.id %}" class="btn">Take Test</a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card">
+        <p>No tests available at the moment.</p>
+    </div>
+{% endif %}
+
+<h2 style="margin-top: 40px;">Your Attempts</h2>
+
+{% if attempts %}
+    <table>
+        <thead>
+            <tr>
+                <th>Test</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Started</th>
+                <th>Completed</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attempt in attempts %}
+                <tr>
+                    <td>{{ attempt.test.title }}</td>
+                    <td>{{ attempt.get_status_display }}</td>
+                    <td>
+                        {% if attempt.status == 'completed' %}
+                            {{ attempt.total_score|floatformat:2 }}/100
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>{{ attempt.started_at|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        {% if attempt.completed_at %}
+                            {{ attempt.completed_at|date:"Y-m-d H:i" }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if attempt.status == 'in_progress' %}
+                            <a href="{% url 'assessments:take_test' attempt.test.id %}" class="btn">Continue</a>
+                        {% elif attempt.status == 'completed' %}
+                            <a href="{% url 'assessments:view_report' attempt.id %}" class="btn">View Report</a>
+                            <a href="{% url 'assessments:generate_pdf_report' attempt.id %}" class="btn btn-success">Download PDF</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="card">
+        <p>You haven't attempted any tests yet.</p>
+    </div>
+{% endif %}
+{% endblock %}
