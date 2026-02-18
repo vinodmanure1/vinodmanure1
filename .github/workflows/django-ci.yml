@@ -6,9 +6,14 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     services:
       postgres:
@@ -91,6 +96,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: test
+    permissions:
+      contents: read
     
     steps:
     - uses: actions/checkout@v3
