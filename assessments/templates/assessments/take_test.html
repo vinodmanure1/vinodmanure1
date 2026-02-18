@@ -1,0 +1,242 @@
+{% extends 'assessments/base.html' %}
+
+{% block title %}Take Test - {{ test.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timer {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+    
+    .timer h3 {
+        margin-bottom: 10px;
+    }
+    
+    .timer-display {
+        font-size: 32px;
+        font-weight: bold;
+        color: #667eea;
+    }
+    
+    .question-card {
+        background: white;
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .question-number {
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .question-text {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .option {
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .option:hover {
+        border-color: #667eea;
+        background: #f8f9ff;
+    }
+    
+    .option input[type="radio"] {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .submit-section {
+        text-align: center;
+        margin-top: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="timer">
+    <h3>Time Remaining</h3>
+    <div class="timer-display" id="timer">{{ test.duration_minutes }}:00</div>
+    <p style="margin-top: 10px; font-size: 14px; color: #666;">Auto-saving every 30s</p>
+</div>
+
+<div class="card">
+    <h2>{{ test.name }}</h2>
+    <p>{{ test.description }}</p>
+    <p><strong>Duration:</strong> {{ test.duration_minutes }} minutes</p>
+</div>
+
+<form id="testForm" method="post">
+    {% csrf_token %}
+    {% for tq in test_questions %}
+    <div class="question-card">
+        <div class="question-number">Question {{ forloop.counter }} of {{ test_questions|length }}</div>
+        <div class="question-text">{{ tq.question.text }}</div>
+        <div class="options">
+            <label class="option">
+                <input type="radio" name="question_{{ tq.question.id }}" value="1" required>
+                <span>1 - Strongly Disagree</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="question_{{ tq.question.id }}" value="2">
+                <span>2 - Disagree</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="question_{{ tq.question.id }}" value="3">
+                <span>3 - Neutral</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="question_{{ tq.question.id }}" value="4">
+                <span>4 - Agree</span>
+            </label>
+            <label class="option">
+                <input type="radio" name="question_{{ tq.question.id }}" value="5">
+                <span>5 - Strongly Agree</span>
+            </label>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <div class="submit-section">
+        <button type="button" onclick="submitTest()" class="btn btn-success" style="font-size: 18px; padding: 15px 40px;">
+            Submit Test
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const attemptId = {{ attempt.id }};
+    const testId = {{ test.id }};
+    const durationMinutes = {{ test.duration_minutes }};
+    let timeRemaining = durationMinutes * 60; // in seconds
+    let autosaveInterval;
+    let timerInterval;
+    
+    // Timer
+    function updateTimer() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        document.getElementById('timer').textContent = 
+            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            clearInterval(autosaveInterval);
+            alert('Time is up! Submitting your test...');
+            submitTest();
+        }
+        
+        timeRemaining--;
+    }
+    
+    // Start timer
+    timerInterval = setInterval(updateTimer, 1000);
+    
+    // Autosave function
+    function autosave() {
+        const formData = new FormData(document.getElementById('testForm'));
+        const answers = {};
+        
+        for (let [key, value] of formData.entries()) {
+            if (key.startsWith('question_')) {
+                const questionId = key.replace('question_', '');
+                answers[questionId] = parseInt(value);
+            }
+        }
+        
+        fetch(`/assessments/api/autosave-attempt/${attemptId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ answers: answers })
+        }).then(response => {
+            if (response.ok) {
+                console.log('Autosaved successfully');
+            }
+        }).catch(error => {
+            console.error('Autosave failed:', error);
+        });
+    }
+    
+    // Start autosave every 30 seconds
+    autosaveInterval = setInterval(autosave, 30000);
+    
+    // Submit test function
+    function submitTest() {
+        const formData = new FormData(document.getElementById('testForm'));
+        const answers = {};
+        
+        for (let [key, value] of formData.entries()) {
+            if (key.startsWith('question_')) {
+                const questionId = key.replace('question_', '');
+                answers[questionId] = parseInt(value);
+            }
+        }
+        
+        // Check if all questions are answered
+        const totalQuestions = {{ test_questions|length }};
+        if (Object.keys(answers).length < totalQuestions) {
+            if (!confirm('You have not answered all questions. Do you want to submit anyway?')) {
+                return;
+            }
+        }
+        
+        clearInterval(timerInterval);
+        clearInterval(autosaveInterval);
+        
+        fetch('/assessments/api/submit-attempt/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                test_id: testId,
+                answers: answers
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.attempt_id) {
+                alert('Test submitted successfully!');
+                window.location.href = `/assessments/report/${data.attempt_id}/`;
+            } else {
+                alert('Error submitting test. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error submitting test. Please try again.');
+        });
+    }
+</script>
+{% endblock %}

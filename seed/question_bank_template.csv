@@ -1,0 +1,21 @@
+text,dimension,weight
+"I enjoy solving complex technical problems",technical,1.0
+"I am comfortable working with programming languages",technical,1.0
+"I like to design and build systems",technical,1.0
+"I enjoy debugging and troubleshooting issues",technical,1.0
+"I think outside the box to find innovative solutions",creative,1.0
+"I enjoy artistic and design-related activities",creative,1.0
+"I like brainstorming new ideas",creative,1.0
+"I am good at visual thinking and design",creative,1.0
+"I excel at analyzing data and patterns",analytical,1.0
+"I enjoy working with numbers and statistics",analytical,1.0
+"I am good at logical reasoning",analytical,1.0
+"I like to break down complex problems systematically",analytical,1.0
+"I am comfortable leading teams and projects",leadership,1.0
+"I enjoy mentoring and guiding others",leadership,1.0
+"I can make difficult decisions under pressure",leadership,1.0
+"I am good at motivating team members",leadership,1.0
+"I communicate effectively in written form",communication,1.0
+"I am comfortable presenting to groups",communication,1.0
+"I listen actively to understand others' perspectives",communication,1.0
+"I can explain complex concepts clearly",communication,1.0

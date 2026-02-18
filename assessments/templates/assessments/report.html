@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Assessment Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            font-size: 12pt;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 28pt;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14pt;
+            color: #666;
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .info-section h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18pt;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+        
+        .info-label {
+            font-weight: bold;
+        }
+        
+        .scores-section {
+            margin-bottom: 30px;
+        }
+        
+        .scores-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20pt;
+        }
+        
+        .total-score {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .total-score h3 {
+            font-size: 18pt;
+            margin-bottom: 10px;
+        }
+        
+        .total-score .score {
+            font-size: 48pt;
+            font-weight: bold;
+        }
+        
+        .dimension-scores {
+            margin-top: 20px;
+        }
+        
+        .dimension-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-left: 4px solid #667eea;
+            background: #f8f9fa;
+        }
+        
+        .dimension-name {
+            font-weight: bold;
+            text-transform: capitalize;
+            margin-bottom: 5px;
+            font-size: 14pt;
+        }
+        
+        .score-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .top-dimensions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e8f4f8;
+            border-radius: 5px;
+        }
+        
+        .top-dimensions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 16pt;
+        }
+        
+        .top-dimensions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .top-dimensions li {
+            padding: 8px 0;
+            border-bottom: 1px solid #d0d0d0;
+            text-transform: capitalize;
+            font-size: 14pt;
+        }
+        
+        .top-dimensions li:last-child {
+            border-bottom: none;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #667eea;
+            text-align: center;
+            color: #666;
+            font-size: 10pt;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Career Assessment Report</h1>
+        <p>Personalized Career Guidance Analysis</p>
+    </div>
+    
+    <div class="info-section">
+        <h2>Assessment Details</h2>
+        <div class="info-row">
+            <span class="info-label">Student:</span>
+            <span>{{ attempt.user.username }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Test:</span>
+            <span>{{ attempt.test.name }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Completed:</span>
+            <span>{{ attempt.completed_at|date:"F d, Y H:i" }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Status:</span>
+            <span style="text-transform: capitalize;">{{ attempt.status }}</span>
+        </div>
+    </div>
+    
+    <div class="scores-section">
+        <h2>Your Results</h2>
+        
+        <div class="total-score">
+            <h3>Overall Score</h3>
+            <div class="score">{{ attempt.total_score|default:"N/A" }}<span style="font-size: 24pt;">/100</span></div>
+        </div>
+        
+        <h3 style="margin-bottom: 15px; color: #333;">Dimension Breakdown</h3>
+        <div class="dimension-scores">
+            {% for dimension, score in attempt.dimension_scores.items %}
+            <div class="dimension-item">
+                <div class="dimension-name">{{ dimension|title }}</div>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: {{ score }}%;">
+                        {{ score }}%
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if attempt.top_dimensions %}
+        <div class="top-dimensions">
+            <h3>Your Top Strengths</h3>
+            <ul>
+                {% for dimension in attempt.top_dimensions %}
+                <li>{{ dimension|title }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="footer">
+        <p>Career Guidance Platform - &copy; 2024</p>
+        <p>This report is confidential and intended for the named recipient only.</p>
+    </div>
+</body>
+</html>
