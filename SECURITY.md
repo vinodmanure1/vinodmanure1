@@ -23,11 +23,12 @@ All dependencies have been updated to their latest patched versions to address k
 
 **Impact**: High - Request smuggling could allow attackers to bypass security controls.
 
-#### Pillow 10.1.0 → 10.3.0 ✅
+#### Pillow 10.1.0 → 12.1.1 ✅
 **Vulnerabilities Fixed:**
-- **CVE-2024-XXXXX**: Buffer overflow vulnerability
+- **CVE-2024-XXXXX**: Buffer overflow vulnerability (fixed in 10.3.0)
+- **CVE-2025-XXXXX**: Out-of-bounds write when loading PSD images (fixed in 12.1.1)
 
-**Impact**: Medium - Buffer overflow could lead to crashes or code execution.
+**Impact**: Medium-High - Buffer overflow and out-of-bounds write could lead to crashes or code execution.
 
 #### WeasyPrint 60.1 → 68.0 ✅
 **Vulnerabilities Fixed:**
