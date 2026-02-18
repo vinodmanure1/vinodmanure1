@@ -235,5 +235,9 @@ def generate_pdf_report(request, attempt_id):
     attempt.pdf_report_file = f'reports/{pdf_filename}'
     attempt.save()
     
-    return FileResponse(open(pdf_path, 'rb'), content_type='application/pdf')
+    # Use context manager for file handling
+    with open(pdf_path, 'rb') as pdf_file:
+        response = FileResponse(pdf_file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="report_{attempt.id}.pdf"'
+        return response
 
