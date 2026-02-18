@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Take Test - {{ test.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ test.name }}</h2>
+    <p>{{ test.description }}</p>
+    <div class="alert alert-info">
+        <strong>Duration:</strong> {{ test.duration_minutes }} minutes<br>
+        <strong>Total Questions:</strong> {{ test_questions.count }}
+    </div>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {% for tq in test_questions %}
+    <div class="card">
+        <h3>Question {{ forloop.counter }} of {{ test_questions.count }}</h3>
+        <p><strong>{{ tq.question.text }}</strong></p>
+        <p style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">
+            Category: <em>{{ tq.question.get_category_display }}</em>
+        </p>
+        
+        <div style="margin-top: 20px;">
+            <div style="margin-bottom: 10px;">
+                <label style="display: block; padding: 10px; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="question_{{ tq.question.id }}" value="A" required>
+                    <strong>A.</strong> {{ tq.question.option_a }}
+                </label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label style="display: block; padding: 10px; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="question_{{ tq.question.id }}" value="B" required>
+                    <strong>B.</strong> {{ tq.question.option_b }}
+                </label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label style="display: block; padding: 10px; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="question_{{ tq.question.id }}" value="C" required>
+                    <strong>C.</strong> {{ tq.question.option_c }}
+                </label>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label style="display: block; padding: 10px; background: #f8f9fa; border-radius: 4px; cursor: pointer;">
+                    <input type="radio" name="question_{{ tq.question.id }}" value="D" required>
+                    <strong>D.</strong> {{ tq.question.option_d }}
+                </label>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <div class="card" style="text-align: center;">
+        <button type="submit" class="btn btn-success" style="font-size: 1.2em; padding: 15px 40px;">
+            Submit Test
+        </button>
+        <a href="{% url 'student_dashboard' %}" class="btn" style="margin-left: 10px;">Cancel</a>
+    </div>
+</form>
+
+<style>
+    input[type="radio"] {
+        margin-right: 10px;
+    }
+    
+    label:hover {
+        background: #e9ecef !important;
+    }
+</style>
+{% endblock %}

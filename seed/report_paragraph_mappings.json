@@ -1,0 +1,122 @@
+[
+    {
+        "category": "technical",
+        "min_score": 0,
+        "max_score": 40,
+        "title": "Developing Technical Foundation",
+        "content": "Your technical skills are in the early development stage. This presents an excellent opportunity to build a strong foundation in technology. Focus on understanding fundamental concepts and practicing regularly.",
+        "recommendations": "Start with online courses in programming basics, work on small projects, join coding communities, and practice problem-solving daily. Consider beginner-friendly languages like Python or JavaScript."
+    },
+    {
+        "category": "technical",
+        "min_score": 41,
+        "max_score": 70,
+        "title": "Growing Technical Competence",
+        "content": "You demonstrate solid technical skills with room for advancement. You have a good foundation and are ready to tackle more complex challenges.",
+        "recommendations": "Build more complex projects, contribute to open-source, learn advanced concepts like algorithms and system design, and consider specializing in a specific tech stack."
+    },
+    {
+        "category": "technical",
+        "min_score": 71,
+        "max_score": 100,
+        "title": "Strong Technical Excellence",
+        "content": "You exhibit excellent technical capabilities. Your strong foundation enables you to solve complex problems and create innovative solutions.",
+        "recommendations": "Consider mentoring others, contributing to technical communities, exploring cutting-edge technologies, and taking on architectural or leadership roles in technical projects."
+    },
+    {
+        "category": "creative",
+        "min_score": 0,
+        "max_score": 40,
+        "title": "Building Creative Confidence",
+        "content": "Your creative skills are developing. Everyone has creative potential - it just needs nurturing and practice. Embrace experimentation without fear of failure.",
+        "recommendations": "Explore different creative mediums, take beginner design courses, study successful designs, practice daily sketching or ideation, and join creative communities for feedback and inspiration."
+    },
+    {
+        "category": "creative",
+        "min_score": 41,
+        "max_score": 70,
+        "title": "Emerging Creative Talent",
+        "content": "You show promising creative abilities. You can generate ideas and execute them with moderate success. Continue developing your unique style and voice.",
+        "recommendations": "Build a portfolio, experiment with advanced design tools, study design principles, seek feedback from professionals, and work on real-world projects to refine your skills."
+    },
+    {
+        "category": "creative",
+        "min_score": 71,
+        "max_score": 100,
+        "title": "Outstanding Creative Vision",
+        "content": "You possess exceptional creative abilities. Your innovative thinking and execution skills set you apart. You can transform abstract concepts into compelling visual or conceptual solutions.",
+        "recommendations": "Share your work publicly, mentor aspiring creatives, push boundaries with experimental projects, collaborate with other disciplines, and consider leadership roles in creative projects."
+    },
+    {
+        "category": "analytical",
+        "min_score": 0,
+        "max_score": 40,
+        "title": "Developing Analytical Thinking",
+        "content": "Your analytical skills are in early development. Building these skills will greatly enhance your problem-solving capabilities and decision-making.",
+        "recommendations": "Practice breaking down complex problems, learn basic statistics, work on logic puzzles, take courses in data analysis, and apply structured thinking to everyday situations."
+    },
+    {
+        "category": "analytical",
+        "min_score": 41,
+        "max_score": 70,
+        "title": "Solid Analytical Foundation",
+        "content": "You demonstrate good analytical capabilities. You can process information systematically and draw reasonable conclusions from data.",
+        "recommendations": "Study advanced analytics techniques, learn data visualization tools, practice with real datasets, take courses in statistics or data science, and apply analytics to business problems."
+    },
+    {
+        "category": "analytical",
+        "min_score": 71,
+        "max_score": 100,
+        "title": "Exceptional Analytical Prowess",
+        "content": "You excel in analytical thinking. Your ability to process complex information, identify patterns, and derive insights is outstanding.",
+        "recommendations": "Lead data-driven initiatives, mentor others in analytical thinking, explore machine learning and AI, publish insights and research, and consider roles in data science or business intelligence."
+    },
+    {
+        "category": "interpersonal",
+        "min_score": 0,
+        "max_score": 40,
+        "title": "Growing Interpersonal Skills",
+        "content": "Your interpersonal skills are developing. Strong relationships and communication are crucial for career success and can be learned and improved.",
+        "recommendations": "Practice active listening, seek feedback on communication style, join group activities, take courses in communication, and observe effective communicators in action."
+    },
+    {
+        "category": "interpersonal",
+        "min_score": 41,
+        "max_score": 70,
+        "title": "Effective Interpersonal Abilities",
+        "content": "You have good interpersonal skills and can work effectively with others. You communicate clearly and build positive relationships.",
+        "recommendations": "Develop emotional intelligence, practice conflict resolution, take leadership opportunities, mentor others, and refine your networking skills."
+    },
+    {
+        "category": "interpersonal",
+        "min_score": 71,
+        "max_score": 100,
+        "title": "Outstanding Interpersonal Excellence",
+        "content": "You demonstrate exceptional interpersonal skills. Your ability to connect with others, communicate effectively, and navigate social situations is remarkable.",
+        "recommendations": "Take leadership roles, coach and mentor others, facilitate team building, consider roles in people management, and share your skills through workshops or training."
+    },
+    {
+        "category": "leadership",
+        "min_score": 0,
+        "max_score": 40,
+        "title": "Emerging Leadership Potential",
+        "content": "Your leadership skills are in the early stages. Leadership can be learned and developed through practice and experience.",
+        "recommendations": "Start by leading small projects, observe effective leaders, take leadership courses, volunteer for team coordination roles, and seek feedback on your leadership style."
+    },
+    {
+        "category": "leadership",
+        "min_score": 41,
+        "max_score": 70,
+        "title": "Developing Leadership Capabilities",
+        "content": "You show promising leadership abilities. You can guide teams and make decisions, though there's room to refine your approach.",
+        "recommendations": "Take on larger leadership responsibilities, study different leadership styles, practice strategic thinking, develop your decision-making skills, and seek mentorship from experienced leaders."
+    },
+    {
+        "category": "leadership",
+        "min_score": 71,
+        "max_score": 100,
+        "title": "Exemplary Leadership Skills",
+        "content": "You possess exceptional leadership qualities. Your ability to inspire, guide, and achieve results through others is outstanding.",
+        "recommendations": "Take on strategic leadership roles, mentor future leaders, drive organizational change, develop your executive presence, and consider advanced leadership programs or certifications."
+    }
+]
