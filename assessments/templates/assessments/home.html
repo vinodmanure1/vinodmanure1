@@ -1,0 +1,39 @@
+{% extends 'assessments/base.html' %}
+
+{% block title %}Career Guidance Platform{% endblock %}
+
+{% block content %}
+<h1>Welcome to Career Guidance Platform</h1>
+
+<div style="text-align: center; margin: 40px 0;">
+    <p style="font-size: 18px; margin-bottom: 30px;">
+        Discover your ideal career path through our comprehensive assessment.
+        Answer questions about your interests, skills, and preferences to receive
+        personalized career recommendations.
+    </p>
+    
+    <div style="margin: 40px 0;">
+        <h2>How It Works</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; text-align: left;">
+            <div style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h3 style="color: #667eea; margin-bottom: 10px;">1. Take Assessment</h3>
+                <p>Answer a series of questions about your interests and preferences.</p>
+            </div>
+            <div style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h3 style="color: #667eea; margin-bottom: 10px;">2. Get Results</h3>
+                <p>Receive detailed analysis of your aptitudes across different categories.</p>
+            </div>
+            <div style="padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                <h3 style="color: #667eea; margin-bottom: 10px;">3. Explore Careers</h3>
+                <p>Discover recommended careers tailored to your profile.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 40px;">
+        <a href="{% url 'assessment' %}" class="btn" style="font-size: 20px; padding: 15px 40px;">
+            Start Assessment
+        </a>
+    </div>
+</div>
+{% endblock %}

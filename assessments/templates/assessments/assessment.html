@@ -1,0 +1,158 @@
+{% extends 'assessments/base.html' %}
+
+{% block title %}Career Assessment{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-group {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="email"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    
+    .question {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .question-text {
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #495057;
+        font-size: 16px;
+    }
+    
+    .category-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #667eea;
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+    
+    .rating-options {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .rating-option {
+        flex: 1;
+        min-width: 100px;
+    }
+    
+    .rating-option input[type="radio"] {
+        display: none;
+    }
+    
+    .rating-option label {
+        display: block;
+        padding: 12px;
+        background: white;
+        border: 2px solid #dee2e6;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+    
+    .rating-option input[type="radio"]:checked + label {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+    
+    .rating-option label:hover {
+        border-color: #667eea;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>Career Assessment</h1>
+<p style="text-align: center; margin-bottom: 30px;">
+    Please answer all questions honestly. Rate each statement from 1 (Strongly Disagree) to 5 (Strongly Agree).
+</p>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="student_name">Your Name *</label>
+        <input type="text" id="student_name" name="student_name" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="student_email">Your Email *</label>
+        <input type="email" id="student_email" name="student_email" required>
+    </div>
+    
+    <h2>Assessment Questions</h2>
+    
+    {% for question in questions %}
+    <div class="question">
+        <span class="category-badge">{{ question.get_category_display }}</span>
+        <div class="question-text">
+            {{ forloop.counter }}. {{ question.text }}
+        </div>
+        <div class="rating-options">
+            <div class="rating-option">
+                <input type="radio" id="q{{ question.id }}_1" name="question_{{ question.id }}" value="1" required>
+                <label for="q{{ question.id }}_1">1<br>Strongly<br>Disagree</label>
+            </div>
+            <div class="rating-option">
+                <input type="radio" id="q{{ question.id }}_2" name="question_{{ question.id }}" value="2" required>
+                <label for="q{{ question.id }}_2">2<br>Disagree</label>
+            </div>
+            <div class="rating-option">
+                <input type="radio" id="q{{ question.id }}_3" name="question_{{ question.id }}" value="3" required>
+                <label for="q{{ question.id }}_3">3<br>Neutral</label>
+            </div>
+            <div class="rating-option">
+                <input type="radio" id="q{{ question.id }}_4" name="question_{{ question.id }}" value="4" required>
+                <label for="q{{ question.id }}_4">4<br>Agree</label>
+            </div>
+            <div class="rating-option">
+                <input type="radio" id="q{{ question.id }}_5" name="question_{{ question.id }}" value="5" required>
+                <label for="q{{ question.id }}_5">5<br>Strongly<br>Agree</label>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p style="text-align: center; color: #dc3545;">
+        No questions available. Please contact the administrator.
+    </p>
+    {% endfor %}
+    
+    {% if questions %}
+    <div style="text-align: center; margin-top: 40px;">
+        <button type="submit" class="btn">Submit Assessment</button>
+    </div>
+    {% endif %}
+</form>
+{% endblock %}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Career Assessment Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1cm;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #667eea;
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        
+        .header p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .section {
+            margin: 30px 0;
+            page-break-inside: avoid;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .recommendation-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+            margin: 20px 0;
+        }
+        
+        .recommendation-box h3 {
+            color: #667eea;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+        
+        .career-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #764ba2;
+            margin: 15px 0;
+        }
+        
+        .scores-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .scores-table th,
+        .scores-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .scores-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .score-bar {
+            background: #e9ecef;
+            height: 25px;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .alternatives-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .career-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 3px solid #764ba2;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #667eea;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+            margin: 20px 0;
+        }
+        
+        .info-box h4 {
+            color: #2196F3;
+            margin: 0 0 10px 0;
+        }
+        
+        .info-box ul {
+            margin: 10px 0 0 20px;
+        }
+        
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Career Assessment Report</h1>
+        <p>Personalized Career Guidance Analysis</p>
+        <p style="font-weight: bold; margin-top: 10px;">{{ recommendation.student_name }}</p>
+        <p>{{ recommendation.student_email }}</p>
+        <p style="font-size: 12px; margin-top: 10px;">Generated on {{ recommendation.updated_at|date:"F d, Y" }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Primary Career Recommendation</h2>
+        <div class="recommendation-box">
+            <h3>Recommended Career Path</h3>
+            <div class="career-title">{{ recommendation.recommended_career }}</div>
+            <p>Based on your comprehensive assessment results, this career path aligns best with your interests, strengths, and aptitudes.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Aptitude Analysis</h2>
+        <p>Your scores across different aptitude categories:</p>
+        <table class="scores-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Score</th>
+                    <th>Visual Representation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category, score in scores.items %}
+                <tr>
+                    <td><strong>{{ category }}</strong></td>
+                    <td>{{ score|floatformat:1 }}%</td>
+                    <td>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: {{ score }}%;">
+                                {{ score|floatformat:0 }}%
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if recommendation.alternative_careers %}
+    <div class="section">
+        <h2>Alternative Career Paths</h2>
+        <p>Based on your aptitude profile, you may also consider these career options:</p>
+        <div class="alternatives-list">
+            {% for career in recommendation.alternative_careers %}
+            <div class="career-item">
+                {{ career }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <div class="info-box">
+            <h4>Next Steps & Recommendations</h4>
+            <ul>
+                <li>Research educational requirements for your recommended career path</li>
+                <li>Explore relevant certification programs and training opportunities</li>
+                <li>Connect with professionals currently working in your field of interest</li>
+                <li>Consider internships, volunteering, or entry-level positions to gain experience</li>
+                <li>Review job market trends and salary expectations in your chosen field</li>
+                <li>Develop skills aligned with your career goals through online courses or workshops</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>Career Guidance Platform</strong></p>
+        <p>This report is based on your self-assessment responses and provides guidance for career exploration.</p>
+        <p>For personalized career counseling, please consult with a professional career advisor.</p>
+    </div>
+</body>
+</html>
