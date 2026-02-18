@@ -23,9 +23,9 @@ A Django-based web application for career assessment and guidance. Students can 
 
 ## Tech Stack
 
-- **Backend**: Django 4.2
+- **Backend**: Django 4.2.28
 - **Database**: PostgreSQL 15
-- **PDF Generation**: WeasyPrint
+- **PDF Generation**: WeasyPrint 68.0
 - **Containerization**: Docker & Docker Compose
 - **CI/CD**: GitHub Actions
 
