@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from django.contrib import messages
+from django.template.loader import render_to_string
+from weasyprint import HTML
+import re
 from .models import Question, StudentResponse, CareerRecommendation
 from .services import CareerScoringService
-from weasyprint import HTML
-from django.template.loader import render_to_string
 
 
 class AssessmentView(View):
@@ -95,7 +96,6 @@ class PDFReportView(View):
         pdf_file = HTML(string=html_string).write_pdf()
         
         # Sanitize filename to prevent security issues
-        import re
         safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', recommendation.student_name)
         
         # Return PDF response
