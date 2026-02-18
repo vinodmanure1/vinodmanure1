@@ -1,0 +1,90 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libcairo2 \
+          libpango-1.0-0 \
+          libpangocairo-1.0-0 \
+          libgdk-pixbuf2.0-0 \
+          libffi-dev \
+          shared-mime-info
+    
+    - name: Install Python dependencies
+      working-directory: ./career_guidance_platform
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run migrations
+      working-directory: ./career_guidance_platform
+      env:
+        DB_NAME: test_db
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DB_HOST: localhost
+        DB_PORT: 5432
+        SECRET_KEY: test-secret-key-for-ci
+        DEBUG: True
+      run: |
+        python manage.py migrate
+    
+    - name: Run tests
+      working-directory: ./career_guidance_platform
+      env:
+        DB_NAME: test_db
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DB_HOST: localhost
+        DB_PORT: 5432
+        SECRET_KEY: test-secret-key-for-ci
+        DEBUG: True
+      run: |
+        pytest
+    
+    - name: Run Django check
+      working-directory: ./career_guidance_platform
+      env:
+        DB_NAME: test_db
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DB_HOST: localhost
+        DB_PORT: 5432
+        SECRET_KEY: test-secret-key-for-ci
+        DEBUG: True
+      run: |
+        python manage.py check

@@ -1,0 +1,1 @@
+# Django career platform project

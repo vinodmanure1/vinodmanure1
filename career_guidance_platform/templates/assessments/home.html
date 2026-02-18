@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Career Guidance Platform{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Welcome to Career Guidance Platform</h1>
+    <p style="margin: 1rem 0;">Discover your career interests and strengths through our comprehensive assessment.</p>
+    
+    {% if user.is_authenticated %}
+        <a href="{% url 'assessments:dashboard' %}" class="btn">Go to Dashboard</a>
+    {% else %}
+        <a href="/admin/login/" class="btn">Login to Get Started</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>About the Assessment</h2>
+    <p>Our career guidance assessment helps you:</p>
+    <ul style="margin: 1rem 0 1rem 2rem;">
+        <li>Identify your key strengths and interests</li>
+        <li>Get personalized career recommendations</li>
+        <li>Receive a detailed PDF report</li>
+        <li>Track your progress over time</li>
+    </ul>
+</div>
+{% endblock %}
