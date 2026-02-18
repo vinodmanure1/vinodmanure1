@@ -1,0 +1,26 @@
+external_id,grade,topic,question_type,question_text,options,correct_answer,weight,dimension
+Q001,9,Mathematics,mcq,What is 15% of 200?,"[""25"", ""30"", ""35"", ""40""]",30,1.0,aptitude
+Q002,9,Mathematics,mcq,If x + 5 = 12, what is x?,"[""5"", ""6"", ""7"", ""8""]",7,1.0,aptitude
+Q003,9,Logic,mcq,"In a sequence 2, 4, 8, 16, what comes next?","[""24"", ""28"", ""32"", ""36""]",32,1.0,logical
+Q004,9,Logic,mcq,All cats are animals. Some animals are pets. Which is true?,"[""All cats are pets"", ""Some cats are pets"", ""All pets are cats"", ""Cannot determine""]",Cannot determine,1.0,logical
+Q005,9,Pattern Recognition,mcq,"If MONDAY = 123456, what is DAY?","[""456"", ""654"", ""345"", ""543""]",456,1.0,logical
+Q006,9,Career Interest,rating,I enjoy working with numbers and data,None,5,1.0,interest
+Q007,9,Career Interest,rating,I like creating and designing things,None,5,1.0,interest
+Q008,9,Career Interest,rating,I prefer working with people rather than alone,None,5,1.0,interest
+Q009,9,Career Interest,rating,I enjoy solving technical problems,None,5,1.0,interest
+Q010,9,Career Interest,rating,I like helping others learn new things,None,5,1.0,interest
+Q011,9,Motivation,rating,I am motivated by achieving high grades,None,5,1.0,motivation
+Q012,9,Motivation,rating,I work hard even when tasks are difficult,None,5,1.0,motivation
+Q013,9,Motivation,rating,I set goals and work towards them,None,5,1.0,motivation
+Q014,9,Motivation,rating,I take initiative in group projects,None,5,1.0,motivation
+Q015,9,Motivation,rating,I am curious about learning new subjects,None,5,1.0,motivation
+Q016,9,Science,mcq,What is the chemical symbol for water?,"[""H2O"", ""O2"", ""CO2"", ""H2""]",H2O,1.0,aptitude
+Q017,9,Science,mcq,Which planet is closest to the Sun?,"[""Venus"", ""Earth"", ""Mercury"", ""Mars""]",Mercury,1.0,aptitude
+Q018,9,Reasoning,mcq,"If all roses are flowers, and some flowers are red, which must be true?","[""All roses are red"", ""Some roses are red"", ""All flowers are roses"", ""None of the above""]",None of the above,1.0,logical
+Q019,9,English,mcq,What is the synonym of 'happy'?,"[""Sad"", ""Joyful"", ""Angry"", ""Tired""]",Joyful,1.0,aptitude
+Q020,9,Mathematics,mcq,What is the area of a rectangle with length 8 and width 5?,"[""13"", ""40"", ""80"", ""35""]",40,1.0,aptitude
+Q021,9,Career Interest,rating,I enjoy reading and writing,None,5,1.0,interest
+Q022,9,Career Interest,rating,I like working outdoors,None,5,1.0,interest
+Q023,9,Career Interest,rating,I am interested in science and experiments,None,5,1.0,interest
+Q024,9,Motivation,rating,I complete my homework on time,None,5,1.0,motivation
+Q025,9,Motivation,rating,I participate actively in class,None,5,1.0,motivation

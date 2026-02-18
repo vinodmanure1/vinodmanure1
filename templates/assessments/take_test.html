@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ test.name }} - Career Guidance Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timer {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        z-index: 1000;
+    }
+    .timer-display {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #667eea;
+    }
+    .question-container {
+        margin-bottom: 30px;
+    }
+    .question-number {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 5px;
+    }
+    .question-text {
+        font-size: 1.1em;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .option {
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .option:hover {
+        border-color: #667eea;
+        background: #f8f9ff;
+    }
+    .option input {
+        margin-right: 10px;
+    }
+    .rating-scale {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .rating-option {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .rating-option:hover {
+        border-color: #667eea;
+        background: #f8f9ff;
+    }
+    .rating-option input {
+        display: none;
+    }
+    .rating-option.selected {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+    .submit-section {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 2px solid #ddd;
+    }
+    .autosave-status {
+        font-size: 0.9em;
+        color: #666;
+        margin-top: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="timer">
+    <div>Time Remaining</div>
+    <div class="timer-display" id="timer">{{ test.duration_minutes }}:00</div>
+</div>
+
+<div class="card">
+    <h2>{{ test.name }}</h2>
+    <p>Duration: {{ test.duration_minutes }} minutes</p>
+    <p>Please answer all questions to the best of your ability.</p>
+</div>
+
+<form id="test-form">
+    {% csrf_token %}
+    {% for tq in test_questions %}
+    <div class="card question-container">
+        <div class="question-number">Question {{ tq.sequence }} of {{ test_questions|length }}</div>
+        <div class="question-text">{{ tq.question.question_text }}</div>
+        
+        {% if tq.question.question_type == 'mcq' or tq.question.question_type == 'true_false' %}
+        <div class="options">
+            {% for option in tq.question.options %}
+            <label class="option">
+                <input type="radio" name="question_{{ tq.question.id }}" value="{{ option }}" required>
+                {{ option }}
+            </label>
+            {% endfor %}
+        </div>
+        {% elif tq.question.question_type == 'rating' %}
+        <div class="rating-scale">
+            <div>Strongly Disagree</div>
+            {% for i in "12345" %}
+            <label class="rating-option" data-question="{{ tq.question.id }}" data-value="{{ i }}">
+                <input type="radio" name="question_{{ tq.question.id }}" value="{{ i }}" required>
+                <div>{{ i }}</div>
+            </label>
+            {% endfor %}
+            <div>Strongly Agree</div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <div class="card submit-section">
+        <button type="submit" class="btn">Submit Test</button>
+        <div class="autosave-status" id="autosave-status">Answers are being saved automatically...</div>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const testDuration = {{ test.duration_minutes }} * 60; // in seconds
+    const attemptId = {{ attempt.id }};
+    let timeRemaining = testDuration;
+    let autosaveInterval;
+    
+    // Timer countdown
+    const timerDisplay = document.getElementById('timer');
+    setInterval(() => {
+        if (timeRemaining > 0) {
+            timeRemaining--;
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeRemaining === 0) {
+                alert('Time is up! Submitting your test...');
+                document.getElementById('test-form').submit();
+            }
+        }
+    }, 1000);
+    
+    // Rating scale interactions
+    document.querySelectorAll('.rating-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const questionId = this.dataset.question;
+            document.querySelectorAll(`.rating-option[data-question="${questionId}"]`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            this.querySelector('input').checked = true;
+            autosaveAnswers();
+        });
+    });
+    
+    // Auto-save answers
+    function autosaveAnswers() {
+        const formData = new FormData(document.getElementById('test-form'));
+        const answers = {};
+        
+        for (const [key, value] of formData.entries()) {
+            if (key.startsWith('question_')) {
+                const questionId = key.replace('question_', '');
+                answers[questionId] = value;
+            }
+        }
+        
+        fetch('/api/attempts/autosave/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: JSON.stringify({
+                attempt_id: attemptId,
+                answers: answers
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('autosave-status').textContent = 'Answers saved ✓';
+        })
+        .catch(error => {
+            console.error('Autosave failed:', error);
+        });
+    }
+    
+    // Autosave every 30 seconds
+    autosaveInterval = setInterval(autosaveAnswers, 30000);
+    
+    // Auto-save on radio button change
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', autosaveAnswers);
+    });
+    
+    // Form submission
+    document.getElementById('test-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const answers = {};
+        
+        for (const [key, value] of formData.entries()) {
+            if (key.startsWith('question_')) {
+                const questionId = key.replace('question_', '');
+                answers[questionId] = value;
+            }
+        }
+        
+        fetch('/api/attempts/submit/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            },
+            body: JSON.stringify({
+                test_id: {{ test.id }},
+                answers: answers
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(`Test submitted successfully!\nYour total score: ${data.total_score}/100`);
+            window.location.href = '/';
+        })
+        .catch(error => {
+            console.error('Submission failed:', error);
+            alert('Failed to submit test. Please try again.');
+        });
+    });
+</script>
+{% endblock %}
