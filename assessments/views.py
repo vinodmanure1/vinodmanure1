@@ -94,9 +94,13 @@ class PDFReportView(View):
         # Generate PDF
         pdf_file = HTML(string=html_string).write_pdf()
         
+        # Sanitize filename to prevent security issues
+        import re
+        safe_name = re.sub(r'[^a-zA-Z0-9_-]', '_', recommendation.student_name)
+        
         # Return PDF response
         response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="career_report_{recommendation.student_name.replace(" ", "_")}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="career_report_{safe_name}.pdf"'
         
         return response
 
