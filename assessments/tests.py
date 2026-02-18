@@ -135,7 +135,7 @@ class TestAttemptSubmission:
         assert 'dimension_scores' in attempt.scores
         assert 'analytical' in attempt.scores['dimension_scores']
     
-    @patch('assessments.views.HTML')
+    @patch('weasyprint.HTML')
     def test_pdf_generation_mocked(self, mock_html):
         """Test PDF generation with mocked WeasyPrint."""
         mock_pdf = MagicMock()
