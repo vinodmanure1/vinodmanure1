@@ -1,0 +1,105 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ main, develop, 'add/**' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: test_career_platform
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install flake8 black
+    
+    - name: Lint with flake8
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 career_platform --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=migrations,__pycache__,.git
+        # Exit-zero treats all errors as warnings
+        flake8 career_platform --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --exclude=migrations,__pycache__,.git
+    
+    - name: Check code formatting with black
+      run: |
+        black --check career_platform --exclude='migrations|__pycache__|\.git' || true
+    
+    - name: Run Django tests
+      env:
+        SECRET_KEY: test-secret-key-for-ci
+        DEBUG: False
+        DB_NAME: test_career_platform
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DB_HOST: localhost
+        DB_PORT: 5432
+      run: |
+        cd career_platform
+        python manage.py migrate
+        python manage.py test assessments --verbosity=2
+    
+    - name: Check for security issues
+      run: |
+        pip install safety bandit
+        # Check for known security vulnerabilities in dependencies
+        safety check --json || true
+        # Run bandit security linter
+        bandit -r career_platform -f json -o bandit-report.json -ll || true
+    
+    - name: Upload test coverage
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          bandit-report.json
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker image
+      run: |
+        docker build -t career-platform:latest .
+    
+    - name: Test Docker image
+      run: |
+        docker run --rm career-platform:latest python --version
+        docker run --rm career-platform:latest python manage.py check --deploy || true

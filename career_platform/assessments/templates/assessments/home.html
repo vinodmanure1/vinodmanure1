@@ -1,0 +1,27 @@
+{% extends 'assessments/base.html' %}
+
+{% block title %}Available Assessments - Career Guidance Platform{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome to Career Guidance Platform</h2>
+    <p>Discover your ideal career path through our comprehensive assessments.</p>
+</div>
+
+<div class="card">
+    <h3>Available Assessments</h3>
+    
+    {% if assessments %}
+        {% for assessment in assessments %}
+        <div class="card">
+            <h4>{{ assessment.title }}</h4>
+            <p>{{ assessment.description }}</p>
+            <p><strong>Duration:</strong> {{ assessment.duration_minutes }} minutes</p>
+            <a href="{% url 'take_assessment' assessment.id %}" class="btn btn-primary">Start Assessment</a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No assessments available at the moment. Please check back later.</p>
+    {% endif %}
+</div>
+{% endblock %}
