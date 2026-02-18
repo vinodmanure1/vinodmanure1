@@ -1,0 +1,33 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Upload Questions CSV</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+        <label for="csv_file">CSV File:</label>
+        <input type="file" name="csv_file" id="csv_file" accept=".csv" required>
+    </div>
+    <div class="submit-row">
+        <input type="submit" value="Upload" class="default">
+        <a href="{% url 'admin:assessments_question_changelist' %}" class="button cancel-link">Cancel</a>
+    </div>
+</form>
+
+<div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+    <h3>CSV Format</h3>
+    <p>The CSV file should have the following columns:</p>
+    <ul>
+        <li><strong>external_id</strong>: Unique question identifier</li>
+        <li><strong>grade</strong>: Grade level (e.g., 9)</li>
+        <li><strong>topic</strong>: Question topic/category</li>
+        <li><strong>question_type</strong>: Type (mcq, true_false, rating)</li>
+        <li><strong>question_text</strong>: The question text</li>
+        <li><strong>options</strong>: JSON array of options (e.g., ["A","B","C"])</li>
+        <li><strong>correct_answer</strong>: Correct answer</li>
+        <li><strong>weight</strong>: Question weight (default: 1.0)</li>
+        <li><strong>dimension</strong>: Assessment dimension (aptitude, logical, interest, motivation)</li>
+    </ul>
+</div>
+{% endblock %}

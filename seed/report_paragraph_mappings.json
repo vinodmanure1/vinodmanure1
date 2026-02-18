@@ -1,0 +1,74 @@
+[
+  {
+    "dimension": "aptitude",
+    "score_range": "0-30",
+    "student_paragraph": "Your aptitude score suggests you may need additional practice in foundational academic skills. Focus on building strong basics through regular study and practice. Consider working with a tutor or using online learning resources to strengthen your understanding.",
+    "parent_paragraph": "Your child's aptitude assessment shows they would benefit from additional support in core academic areas. We recommend encouraging consistent study habits, providing a quiet study environment, and considering supplementary educational resources or tutoring to build confidence and skills."
+  },
+  {
+    "dimension": "aptitude",
+    "score_range": "31-60",
+    "student_paragraph": "You have a solid foundation in academic aptitude with room for growth. With focused effort and consistent practice, you can strengthen your skills further. Identify areas where you face challenges and dedicate extra time to mastering them.",
+    "parent_paragraph": "Your child demonstrates average aptitude with potential for improvement. Encourage them to maintain regular study routines and help identify subjects that need extra attention. Positive reinforcement and structured learning time will help them build confidence and excel."
+  },
+  {
+    "dimension": "aptitude",
+    "score_range": "61-100",
+    "student_paragraph": "Excellent! Your strong aptitude indicates you have a natural ability for academic learning. Continue challenging yourself with advanced materials and consider exploring subjects in greater depth. Your analytical and problem-solving skills will serve you well in various career paths.",
+    "parent_paragraph": "Your child shows exceptional academic aptitude! They are ready for challenging material and may benefit from enrichment programs or advanced courses. Encourage their curiosity and provide opportunities for them to explore subjects they're passionate about."
+  },
+  {
+    "dimension": "logical",
+    "score_range": "0-30",
+    "student_paragraph": "Your logical reasoning skills need development. Practice solving puzzles, brain teasers, and logical problems regularly. Break down complex problems into smaller steps and work on pattern recognition exercises to improve your analytical thinking.",
+    "parent_paragraph": "Your child's logical reasoning abilities can be enhanced through practice. Engage them with puzzles, strategy games, and activities that require planning and problem-solving. These skills are crucial for success in many fields and can be improved with consistent practice."
+  },
+  {
+    "dimension": "logical",
+    "score_range": "31-60",
+    "student_paragraph": "You have good logical reasoning abilities with room to grow. Continue practicing problem-solving and analytical thinking through games, puzzles, and real-world challenges. These skills will be valuable in technical and analytical career paths.",
+    "parent_paragraph": "Your child shows satisfactory logical reasoning skills. Encourage activities that challenge their analytical thinking, such as chess, coding exercises, or science experiments. These experiences will help them develop stronger problem-solving capabilities."
+  },
+  {
+    "dimension": "logical",
+    "score_range": "61-100",
+    "student_paragraph": "Outstanding! Your logical reasoning abilities are highly developed. You excel at analyzing problems, identifying patterns, and developing solutions. Consider careers in engineering, technology, research, or any field requiring strong analytical skills.",
+    "parent_paragraph": "Your child demonstrates excellent logical reasoning abilities. They have a natural talent for analytical thinking and problem-solving. Encourage exploration of STEM fields, coding, or other areas that leverage these strong analytical capabilities."
+  },
+  {
+    "dimension": "interest",
+    "score_range": "0-30",
+    "student_paragraph": "Your career interest profile suggests you're still exploring what excites you. Take time to try different activities, join clubs, volunteer, or shadow professionals in various fields. Discovering your passions is an important part of career planning.",
+    "parent_paragraph": "Your child is in the exploration phase of career development. Encourage them to try diverse activities and expose them to different career options through books, videos, career fairs, or conversations with professionals. This exploration is crucial for making informed career decisions."
+  },
+  {
+    "dimension": "interest",
+    "score_range": "31-60",
+    "student_paragraph": "You're developing clear career interests in certain areas. Continue exploring fields that attract you through projects, internships, or informational interviews. Understanding what you enjoy will help guide your educational and career choices.",
+    "parent_paragraph": "Your child is showing emerging career interests. Support their exploration by providing opportunities related to their interests, whether through extracurricular activities, online courses, or mentorship. Help them connect their interests to real-world career possibilities."
+  },
+  {
+    "dimension": "interest",
+    "score_range": "61-100",
+    "student_paragraph": "Excellent! You have strong, well-defined career interests. Your clarity about what excites you professionally is valuable. Continue deepening your knowledge and gaining experience in your areas of interest through specialized courses, projects, and networking.",
+    "parent_paragraph": "Your child has developed strong career interests. Support their passion by helping them access relevant learning opportunities, mentors, and experiences in their chosen field. Their clear direction is an excellent foundation for future success."
+  },
+  {
+    "dimension": "motivation",
+    "score_range": "0-30",
+    "student_paragraph": "Building stronger motivation will help you achieve your goals. Start by setting small, achievable goals and celebrating your progress. Find subjects or activities that genuinely interest you, and remember that effort and persistence are key to success.",
+    "parent_paragraph": "Your child would benefit from support in building motivation and self-discipline. Help them set realistic goals, create structured routines, and find intrinsic motivators. Positive reinforcement and helping them see the connection between effort and results can boost their motivation."
+  },
+  {
+    "dimension": "motivation",
+    "score_range": "31-60",
+    "student_paragraph": "You show good levels of motivation and self-drive. Keep building on this by setting clear goals and maintaining consistent effort. When facing challenges, remember your past successes and use them as motivation to push through difficulties.",
+    "parent_paragraph": "Your child demonstrates satisfactory motivation levels. Continue encouraging their efforts and helping them set meaningful goals. Teach them strategies for maintaining motivation during challenging times and celebrate their achievements to reinforce positive behaviors."
+  },
+  {
+    "dimension": "motivation",
+    "score_range": "61-100",
+    "student_paragraph": "Exceptional! Your high motivation and strong work ethic are tremendous assets. You show dedication, perseverance, and the ability to set and achieve goals. These qualities will contribute significantly to your success in any career path you choose.",
+    "parent_paragraph": "Your child demonstrates outstanding motivation and self-discipline. They are self-driven and committed to their goals. Continue supporting their initiatives while ensuring they maintain a healthy balance between achievement and well-being."
+  }
+]

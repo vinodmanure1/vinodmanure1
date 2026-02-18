@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=career_platform_db
+      - POSTGRES_USER=career_user
+      - POSTGRES_PASSWORD=career_pass
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://career_user:career_pass@db:5432/career_platform_db
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-dev-key-change-in-production
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
