@@ -17,9 +17,9 @@ A Django-based Career Guidance Platform that provides assessment tests, determin
 
 ## Tech Stack
 
-- **Backend**: Django 4.2.9
+- **Backend**: Django 4.2.26
 - **Database**: PostgreSQL 15
-- **PDF Generation**: WeasyPrint 60.2
+- **PDF Generation**: WeasyPrint 68.0
 - **API**: Django REST Framework 3.14.0
 - **Testing**: pytest-django 4.7.0
 - **Containerization**: Docker & Docker Compose
