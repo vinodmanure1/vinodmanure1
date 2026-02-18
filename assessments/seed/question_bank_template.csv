@@ -1,0 +1,16 @@
+question_text,option_a,option_b,option_c,option_d,correct_answer,category,difficulty
+"What is 15 + 27?",40,42,45,38,B,Math,Easy
+"Solve: 3x + 5 = 20","x=5","x=15","x=10","x=7",A,Math,Medium
+"What is the square root of 144?",10,11,12,13,C,Math,Easy
+"If a triangle has sides of 3, 4, and 5 units, what type of triangle is it?",Equilateral,Isosceles,Right,Obtuse,C,Math,Medium
+"What is 25% of 80?",15,20,25,30,B,Math,Easy
+"Choose the synonym for 'abundant':",Scarce,Plentiful,Limited,Rare,B,Verbal,Easy
+"Complete the analogy: Cat is to Meow as Dog is to ___",Purr,Bark,Chirp,Roar,B,Verbal,Easy
+"Which word is spelled correctly?",Occurence,Ocurrence,Occurrence,Occurrance,C,Verbal,Medium
+"What is the opposite of 'ascend'?",Rise,Climb,Descend,Elevate,C,Verbal,Easy
+"Identify the noun in the sentence: 'The quick brown fox jumps.'",Quick,Brown,Fox,Jumps,C,Verbal,Easy
+"What comes next in the sequence: 2, 4, 8, 16, ___?",20,24,32,64,C,Logical,Medium
+"If all Bloops are Razzies and all Razzies are Lazzies, then all Bloops are definitely Lazzies.",True,False,Cannot determine,None of the above,A,Logical,Medium
+"Which shape comes next: Circle, Square, Triangle, Circle, Square, ___?",Circle,Square,Triangle,Rectangle,C,Logical,Easy
+"Complete the pattern: A1, B2, C3, D4, ___?",E5,D5,E4,F5,A,Logical,Medium
+"If John is taller than Mary and Mary is taller than Sue, who is the shortest?",John,Mary,Sue,Cannot determine,C,Logical,Easy

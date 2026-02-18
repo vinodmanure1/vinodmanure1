@@ -1,0 +1,56 @@
+[
+  {
+    "category": "Math",
+    "min_score": 0,
+    "max_score": 50,
+    "paragraph_text": "Your mathematical skills show room for improvement. Consider focusing on fundamental concepts and practicing regularly with exercises at your current level. Building a strong foundation in basic arithmetic and algebra will help you progress."
+  },
+  {
+    "category": "Math",
+    "min_score": 51,
+    "max_score": 75,
+    "paragraph_text": "You demonstrate a good understanding of mathematical concepts. Your problem-solving abilities are developing well. Continue practicing more challenging problems to strengthen your skills further and build confidence in advanced topics."
+  },
+  {
+    "category": "Math",
+    "min_score": 76,
+    "max_score": 100,
+    "paragraph_text": "Excellent mathematical abilities! You show strong analytical thinking and problem-solving skills. Consider exploring advanced mathematics topics or competitive math programs to challenge yourself further. Your aptitude suggests potential for STEM-related careers."
+  },
+  {
+    "category": "Verbal",
+    "min_score": 0,
+    "max_score": 50,
+    "paragraph_text": "Your verbal skills need development. Focus on expanding your vocabulary through reading diverse materials, practicing comprehension exercises, and engaging in discussions. Regular reading habits and writing practice will significantly improve your language abilities."
+  },
+  {
+    "category": "Verbal",
+    "min_score": 51,
+    "max_score": 75,
+    "paragraph_text": "Your verbal reasoning and language skills are solid. You communicate effectively and understand complex texts. Continue reading challenging materials, learning new vocabulary, and practicing both written and spoken communication to excel further."
+  },
+  {
+    "category": "Verbal",
+    "min_score": 76,
+    "max_score": 100,
+    "paragraph_text": "Outstanding verbal abilities! Your language skills, vocabulary, and comprehension are excellent. You have strong potential in fields requiring communication, writing, or linguistic analysis. Consider careers in law, journalism, education, or communications."
+  },
+  {
+    "category": "Logical",
+    "min_score": 0,
+    "max_score": 50,
+    "paragraph_text": "Your logical reasoning skills need strengthening. Practice pattern recognition, puzzles, and sequential thinking exercises. Games like chess, sudoku, and logic puzzles can help develop these critical thinking abilities over time."
+  },
+  {
+    "category": "Logical",
+    "min_score": 51,
+    "max_score": 75,
+    "paragraph_text": "You show good logical reasoning and pattern recognition abilities. Your analytical thinking is developing well. Continue challenging yourself with complex problems and strategic games to enhance your critical thinking skills further."
+  },
+  {
+    "category": "Logical",
+    "min_score": 76,
+    "max_score": 100,
+    "paragraph_text": "Exceptional logical reasoning skills! You excel at pattern recognition, analytical thinking, and problem-solving. These abilities are valuable in fields like computer science, engineering, data analysis, and strategic planning. Consider careers that leverage these strengths."
+  }
+]
